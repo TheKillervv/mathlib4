@@ -23,7 +23,7 @@ This file defines the exponential map `IsNilpotent.exp` on `ℚ`-algebras. The d
 The main result is `IsNilpotent.exp_add_of_commute`, which establishes the expected connection
 between the additive and multiplicative structures of `A` for commuting nilpotent elements.
 
-Additionally, `IsNilpotent.exp_of_nilpotent_is_unit` shows that if `a` is nilpotent in `A`, then
+Additionally, `IsNilpotent.isUnit_exp` shows that if `a` is nilpotent in `A`, then
 `IsNilpotent.exp a` is a unit in `A`.
 
 Note: Although the definition works with `ℚ`-algebras, the results can be applied to any algebra
@@ -156,7 +156,7 @@ theorem exp_add_of_commute {a b : A} (h₁ : Commute a b) (h₂ : IsNilpotent a)
       · simp only [implies_true]
   rwa [s₂.symm] at s₁
 
-theorem exp_of_nilpotent_is_unit {a : A} (h : IsNilpotent a) : IsUnit (exp a) := by
+theorem isUnit_exp {a : A} (h : IsNilpotent a) : IsUnit (exp a) := by
   have h₁ : Commute a (-a) := Commute.neg_right rfl
   have h₂ : IsNilpotent (-a) := IsNilpotent.neg h
   have h₃ := exp_add_of_commute h₁ h h₂
@@ -164,6 +164,9 @@ theorem exp_of_nilpotent_is_unit {a : A} (h : IsNilpotent a) : IsUnit (exp a) :=
   apply isUnit_iff_exists.2
   refine ⟨exp (-a), h₃.symm, ?_⟩
   rw [← exp_add_of_commute h₁.symm h₂ h, neg_add_cancel a, exp_zero_eq_one]
+
+@[deprecated (since := "2025-03-11")]
+alias exp_of_nilpotent_is_unit := isUnit_exp
 
 theorem map_exp {B F : Type*} [Ring B] [FunLike F A B] [RingHomClass F A B] [Module ℚ B]
     {a : A} (ha : IsNilpotent a) (f : F) :
