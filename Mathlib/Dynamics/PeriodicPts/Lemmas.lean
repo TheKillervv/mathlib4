@@ -16,7 +16,7 @@ import Mathlib.Data.Fintype.Card
 open Nat Set
 
 namespace Function
-variable {α : Type*} {f : α → α} {x : α}
+variable {α : Type*} {f : α → α} {x y : α}
 
 open Function (Commute)
 
@@ -92,7 +92,15 @@ theorem isPeriodicPt_factorial_iff_mem_periodicPts :
   ⟨mem_periodicPts_of_isPeriodicPt_factorial, isPeriodicPt_factorial_of_mem_periodicPts⟩
 
 theorem mem_periodicPts_of_bijective (h : Bijective f) : x ∈ periodicPts f := by
-  sorry
+  match h₀ : minimalPeriod f x with
+  | 0 =>
+    induction' h₁ : card α generalizing α
+    case zero => sorry
+    case succ m ih => sorry
+  | n + 1 =>
+    have h₁ : minimalPeriod f x ≤ card α := minimalPeriod_le_card
+    rw [← isPeriodicPt_factorial_iff_mem_periodicPts, Function.isPeriodicPt_iff_minimalPeriod_dvd]
+    exact Nat.dvd_factorial (by omega) h₁
 
 theorem periodicPts_eq_univ_of_bijective (h : Bijective f) : periodicPts f = univ := by
   ext x; refine ⟨fun _ ↦ mem_univ _, fun h' ↦ ?_⟩; clear h'
